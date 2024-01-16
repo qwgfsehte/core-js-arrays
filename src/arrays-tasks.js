@@ -368,7 +368,7 @@ function createChunks(/* arr, chunkSize */) {
  */
 function generateOdds(len) {
   const arr = Array.from({ length: len }).fill(1);
-  const result = arr.map(function arrayLength(currentValue, index) {
+  const result = arr.map(function arrayLength(_currentValue, index) {
     return 2 * index + 1;
   });
   return result;
@@ -427,8 +427,17 @@ function getFalsyValuesCount(arr) {
  *                              [0,0,0,1,0],
  *                              [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
-  throw new Error('Not implemented');
+function getIdentityMatrix(n) {
+  const firstArray = Array.from({ length: n });
+  const secondArray = firstArray.map(() => Array.from({ length: n }));
+  return secondArray.map((currentValue, index) =>
+    currentValue.map((value2, index2) => {
+      if (index2 === index) {
+        return 1;
+      }
+      return 0;
+    })
+  );
 }
 
 /**
@@ -442,8 +451,16 @@ function getIdentityMatrix(/* n */) {
  *    getIndicesOfOddNumbers([2, 4, 6, 8, 10]) => []
  *    getIndicesOfOddNumbers([11, 22, 33, 44, 55]) => [0, 2, 4]
  */
-function getIndicesOfOddNumbers(/* numbers */) {
-  throw new Error('Not implemented');
+function getIndicesOfOddNumbers(numbers) {
+  const evenArray = [];
+  const oddArray = [];
+  numbers.map(function evenResult(currentvalue, index) {
+    if (currentvalue % 2 !== 0) {
+      return evenArray.push(index);
+    }
+    return oddArray.push(index);
+  });
+  return evenArray;
 }
 
 /**
@@ -456,8 +473,17 @@ function getIndicesOfOddNumbers(/* numbers */) {
  *    getHexRGBValues([ 0, 255, 16777215]) => [ '#000000', '#0000FF', '#FFFFFF' ]
  *    getHexRGBValues([]) => []
  */
-function getHexRGBValues(/* arr */) {
-  throw new Error('Not implemented');
+function getHexRGBValues(arr) {
+  const num = '0';
+  const result = [];
+  const result2 = [];
+  arr.map((currentValue) =>
+    result.push(currentValue.toString(16).toUpperCase())
+  );
+  result.map((currentValue) =>
+    result2.push(`#${num.repeat(6 - currentValue.length)}${currentValue}`)
+  );
+  return result2;
 }
 
 /**
@@ -474,8 +500,11 @@ function getHexRGBValues(/* arr */) {
  *   getMaxItems([ 10, 2, 7, 5, 3, -5 ], 3) => [ 10, 7, 5 ]
  *   getMaxItems([ 10, 10, 10, 10 ], 3) => [ 10, 10, 10 ]
  */
-function getMaxItems(/* arr, n */) {
-  throw new Error('Not implemented');
+function getMaxItems(arr, n) {
+  const result = arr.sort(function sortArray(a, b) {
+    return b - a;
+  });
+  return result.slice(0, n);
 }
 
 /**
@@ -523,8 +552,12 @@ function findLongestIncreasingSubsequence(/* nums */) {
  *  propagateItemsByPositionIndex([ 'a', 'b', 'c', null ]) => [ 'a', 'b', 'b', 'c', 'c', 'c',  null, null, null, null ]
  *  propagateItemsByPositionIndex([ 1,2,3,4,5 ]) => [ 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5 ]
  */
-function propagateItemsByPositionIndex(/* arr */) {
-  throw new Error('Not implemented');
+function propagateItemsByPositionIndex(arr) {
+  const result = [];
+  arr.map((currentValue, index) =>
+    result.push(Array(index + 1).fill(currentValue))
+  );
+  return result.flat(Infinity);
 }
 
 /**
@@ -580,8 +613,17 @@ function sortDigitNamesByNumericOrder(/* arr */) {
  *   swapHeadAndTail([]) => []
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  const result = [];
+  if (arr.length % 2 !== 0) {
+    result.push(arr.slice(arr.length / 2 + 1));
+    result.push(arr.slice(arr.length / 2, arr.length / 2 + 1));
+    result.push(arr.slice(0, arr.length / 2));
+    return result.flat(Infinity);
+  }
+  result.push(arr.slice(arr.length / 2));
+  result.push(arr.slice(0, arr.length / 2));
+  return result.flat(Infinity);
 }
 
 module.exports = {
