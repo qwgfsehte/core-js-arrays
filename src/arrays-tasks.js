@@ -284,8 +284,12 @@ function distinct(arr) {
  *    createNDimensionalArray(4, 2) => [[[[0, 0], [0, 0]], [[0, 0], [0, 0]]], [[[0, 0], [0, 0]], [[0, 0], [0, 0]]]]
  *    createNDimensionalArray(1, 1) => [0]
  */
-function createNDimensionalArray(/* n, size */) {
-  throw new Error('Not implemented');
+function createNDimensionalArray(n, size) {
+  const arr = Array.from({ length: size }).fill(0);
+  if (n === 1) {
+    return arr;
+  }
+  return arr.map(() => createNDimensionalArray(n - 1, size));
 }
 
 /**
@@ -334,8 +338,20 @@ function selectMany(arr, childrenSelector) {
  *   calculateBalance([ [ 10, 8 ], [ 1, 5 ] ])  => (10 - 8) + (1 - 5) = 2 + -4 = -2
  *   calculateBalance([]) => 0
  */
-function calculateBalance(/* arr */) {
-  throw new Error('Not implemented');
+function calculateBalance(arr) {
+  const arrayFlat = arr.flat(Infinity);
+  const arrResult = [];
+  const arrUnd = [];
+  arrayFlat.map(function arraySum(currentValue, index) {
+    if (index % 2 !== 0) {
+      return arrResult.push(arrayFlat[index - 1] - arrayFlat[index]);
+    }
+    return arrUnd.push(arrayFlat[index] - arrayFlat[index + 1]);
+  });
+  const result = arrResult.reduce(function sumElement(a, b) {
+    return a + b;
+  });
+  return result;
 }
 
 /**
@@ -350,8 +366,12 @@ function calculateBalance(/* arr */) {
  *    createChunks(['a', 'b', 'c', 'd', 'e'], 2) => [['a', 'b'], ['c', 'd'], ['e']]
  *    createChunks([10, 20, 30, 40, 50], 1) => [[10], [20], [30], [40], [50]]
  */
-function createChunks(/* arr, chunkSize */) {
-  throw new Error('Not implemented');
+function createChunks(arr, chunkSize) {
+  return Array.from(
+    { length: Math.ceil(arr.length / chunkSize) },
+    (currentValue, index) =>
+      arr.slice(index * chunkSize, index * chunkSize + chunkSize)
+  );
 }
 
 /**
@@ -368,7 +388,7 @@ function createChunks(/* arr, chunkSize */) {
  */
 function generateOdds(len) {
   const arr = Array.from({ length: len }).fill(1);
-  const result = arr.map(function arrayLength(_currentValue, index) {
+  const result = arr.map(function arrayLength(currentValue, index) {
     return 2 * index + 1;
   });
   return result;
@@ -386,8 +406,12 @@ function generateOdds(len) {
  *   getElementByIndices(['one','two','three'], [2]) => 'three'  (arr[2])
  *   getElementByIndices([[[ 1, 2, 3]]], [ 0, 0, 1 ]) => 2        (arr[0][0][1])
  */
-function getElementByIndices(/* arr, indices */) {
-  throw new Error('Not implemented');
+function getElementByIndices(arr, indices) {
+  const result = arr[indices[0]];
+  if (Array.isArray(result)) {
+    return getElementByIndices(result, indices.slice(1));
+  }
+  return result;
 }
 
 /**
@@ -534,8 +558,20 @@ function findCommonElements(arr1, arr2) {
  *    findLongestIncreasingSubsequence([3, 10, 2, 1, 20]) => 2
  *    findLongestIncreasingSubsequence([50, 3, 10, 7, 40, 80]) => 3
  */
-function findLongestIncreasingSubsequence(/* nums */) {
-  throw new Error('Not implemented');
+function findLongestIncreasingSubsequence(nums) {
+  let record = 0;
+  let current = 0;
+  nums.map(function recordArr(currentValue, index) {
+    if (currentValue < nums[index + 1]) {
+      current += 1;
+    }
+    if (current > record) {
+      record = current;
+      current = 0;
+    }
+    return undefined;
+  });
+  return record + 1;
 }
 
 /**
@@ -573,8 +609,16 @@ function propagateItemsByPositionIndex(arr) {
  *    shiftArray(['a', 'b', 'c', 'd'], -1) => ['b', 'c', 'd', 'a']
  *    shiftArray([10, 20, 30, 40, 50], -3) => [40, 50, 10, 20, 30]
  */
-function shiftArray(/* arr, n */) {
-  throw new Error('Not implemented');
+function shiftArray(arr, n) {
+  const result = [];
+  if (n > 0) {
+    result.push(arr.slice(n + 1));
+    result.push(arr.slice(0, n + 1));
+  } else {
+    result.push(arr.slice(0, n * -1));
+    result.unshift(arr.slice(n * -1));
+  }
+  return result.flat(1);
 }
 
 /**
@@ -590,8 +634,23 @@ function shiftArray(/* arr, n */) {
  *   sortDigitNamesByNumericOrder([ 'nine','eight','nine','eight' ]) => [ 'eight','eight','nine','nine']
  *   sortDigitNamesByNumericOrder([ 'one','one','one','zero' ]) => [ 'zero','one','one','one' ]
  */
-function sortDigitNamesByNumericOrder(/* arr */) {
-  throw new Error('Not implemented');
+function sortDigitNamesByNumericOrder(arr) {
+  const correctArray = [
+    'zero',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+  ];
+  const result = arr.sort(
+    (num1, num2) => correctArray.indexOf(num1) - correctArray.indexOf(num2)
+  );
+  return result;
 }
 
 /**
